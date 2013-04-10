@@ -14,7 +14,7 @@ public class TestCaseBuilder {
 	private String testCaseName;		//Nome of the method used in the test case
 	private String methodName;			//Nome of the method to be tested
 	private List<String> parameters;	//Values of the parameters
-	private List<Attribute> attributes;	//Values of the attributes in the test case
+	private List<Variable> attributes;	//Values of the attributes in the test case
 	
 	/**
 	 * Constructor of the class
@@ -27,14 +27,14 @@ public class TestCaseBuilder {
 	public TestCaseBuilder(String objectName, 
 							String testCaseName,
 							String methodName,
-							List<Attribute> attributes,
+							List<Variable> attributes,
 							List<String> parameters){
 		
 		this.objectName = new String (objectName);
 		this.testCaseName = new String(testCaseName);
 		this.methodName = new String (methodName);
 		this.parameters = new LinkedList<String>(parameters);
-		this.attributes = new LinkedList<Attribute>(attributes);
+		this.attributes = new LinkedList<Variable>(attributes);
 		
 	}
 
@@ -63,7 +63,7 @@ public class TestCaseBuilder {
 	private String addAttributions(String s){
 		//Adds the changes of the values of the object to be tested using setter methods.
 		for (int i = 0; i < attributes.size(); i++){
-			Attribute v = attributes.get(i);
+			Variable v = attributes.get(i);
 			s = s.concat("\t\t" + objectName + ".set" + Constants.firstCharToUpperCase(v.getName()) + "(" + v.getValue() + ");\n");
 		}
 		s = s.concat("\n");
@@ -79,7 +79,7 @@ public class TestCaseBuilder {
 		testCase = testCase.concat("\t\t//The assertions generated are incomplete as they need the oracle values which must supplied by the user.\n");
 
 		for (int i = 0; i < attributes.size(); i++){
-			Attribute v = attributes.get(i);
+			Variable v = attributes.get(i);
 			testCase = testCase.concat("\t\t//assertEquals(" + objectName + ".get" + Constants.firstCharToUpperCase(v.getName()) + "), /* Add expected value here. */);\n");
 		}
 

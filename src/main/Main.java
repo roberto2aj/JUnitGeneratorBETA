@@ -8,7 +8,7 @@ public static void main(String args[]){
 	
 		
 		//Código para testar o TestFileBuilder
-		LinkedList<String> parameters0 = new LinkedList<String>();
+		/*LinkedList<String> parameters0 = new LinkedList<String>();
 		parameters0.add("p0");
 		parameters0.add("p1");
 		
@@ -31,20 +31,14 @@ public static void main(String args[]){
 		tf.addTestCase(variables1, parameters1);
 		
 		System.out.println(tf.buildTest());
-		
+		*/
 		
 		/***********************/
-
-		/*
-		String content = "";
-		String outputFileName = "";
-				
-		//Parses the xml file, printing the result into the String content.
-		content = parseFile(inputFileName);
-		outputFileName = "a";
-
-		writeJUnitFile(outputFileName, content);
-		*/
+	
+		XMLParser parser = new XMLParser();
+			
+		parser.generateJUnit(Constants.inputFilePath);
+		System.out.println("File generated successfully.");
 	}
 
 }

@@ -18,40 +18,57 @@ import nu.xom.ValidityException;
 /*
 Formato de XML esperado. 
 
-<machine-name>Player</machine-name>
-<operation-under-test>substitute</operation-under-test>
-<partition-strategy>Equivalence Classes</partition-strategy>
-<combinatorial-criteria>All-Combinations</combinatorial-criteria>
+<test-suite>
+	<machine-name>Player</machine-name>
+	<operation-under-test>substitute</operation-under-test>
+	<partition-strategy>Equivalence Classes</partition-strategy>
+	<combinatorial-criteria>All-Combinations</combinatorial-criteria>
+	<test-cases>
+		<test-case>
+			<id>1</id>
+			<formula>Exemplo de fórmula aqui</formula>
+			<state-variables>
+				<variable>
+					<identifier>var1</identifier>
+					<values>
+						<value>1</value>
+					</values>
+				</variable>
+				<variable>
+					<identifier>var2</identifier>
+					<values>
+						<value>PLAYER1</value>
+						<value>PLAYER2</value>
+						<value>PLAYER3</value>
+					</values>
+				</variable>
+			</state-variables>
+			<operation-parameters>
+				<parameter>
+					<identifier>param1</identifer>
+					<values>
+						<value>1</value>
+					</values>
+				</parameter>
+				<parameter>
+					<identifier>param2</identifier>
+					<values>
+						<value>PLAYER1</value>
+						<value>PLAYER2</value>
+						<value>PLAYER3</value>
+					</values>
+				</parameter>
+			</operation-parameters>
+		</test-case>
+	</test-cases>
+</test-suite>
+*/
 
-<test-case>
-	<variable>
-		<identifier>var1</identifier>
-		<value>1</value>
-	</variable>
 
-	<variable>
-		<identifier>var2</identifier>
-		<value>3</value>
-	</variable>
-
-	<operation-parameters>
-		<value>1</value>
-		<value>2</value>
-	</operation-parameters>
-</test-case> 
- */
-
-//TODO adicionar um método para definir o nome do arquivo de teste gerado com base no XML
 
 public class XMLParser {
 
-	private static String inputFileName;
-	private static String content;
-	private String outputFileName;
-
-
-	public XMLParser (){
-		this.inputFileName = ""; 
+	public XMLParser (){ 
 	}
 
 	public void generateJUnit(String fileName){
@@ -74,33 +91,32 @@ public class XMLParser {
 
 			Builder builder = new Builder();
 			Document doc = builder.build(xmlFile);
-			Element root = doc.getRootElement();
-
-			String className = root.getAttributeValue("machine-name");
-			String operationName = root.getAttributeValue("operation-under-test");
+			Element root = doc.getRootElement();		 //Gets the test-suite node.
+						
+			String className = root.getFirstChildElement("machine-name").getValue();
+			String operationName = root.getFirstChildElement("operation-under-test").getValue();			
 			TestFileBuilder tf = new TestFileBuilder(className, operationName);
 			
-			Elements testCasesXML = root.getChildElements("test-case");
+			Elements testCasesXML = root.getFirstChildElement("test-cases").getChildElements("test-case");
 
 			//For each test case...
 			for(int i = 0; i < testCasesXML.size(); i++){
 				LinkedList<String> parameters = new LinkedList<String>();
-				LinkedList<Attribute> attributes = new LinkedList<Attribute>();
+				LinkedList<Variable> attributes = new LinkedList<Variable>();
 				Element testCaseXML = testCasesXML.get(i);
-				
+
 				//Mount its list of attributes
-				Elements attributesXML = testCaseXML.getChildElements("variable");
+				Elements attributesXML = testCaseXML.getFirstChildElement("state-variables").getChildElements("variable");
 				for(int j = 0; j < attributesXML.size(); j++){
-					String value = attributesXML.get(j).getAttributeValue("value");
-					String name = attributesXML.get(j).getAttributeValue("identifier");
-					attributes.add(new Attribute(name, value));
+					String value = attributesXML.get(j).getFirstChildElement("values").getFirstChildElement("value").getValue();
+					String name = attributesXML.get(j).getFirstChildElement("identifier").getValue();
+					attributes.add(new Variable(name, value));
 				}
-				
-				
+
 				//Mount its list of parameters
-				Elements parametersXML = testCaseXML.getChildElements("operation-parameters"); 
+				Elements parametersXML = testCaseXML.getFirstChildElement("operation-parameters").getChildElements("parameter"); 
 				for (int j = 0; j < parametersXML.size(); j++){
-					parameters.add(parametersXML.get(j).getAttributeValue("value"));
+					parameters.add(parametersXML.get(j).getFirstChildElement("values").getFirstChildElement("value").getValue());
 				}
 				
 				//And add a new test case using the parameters and attributes found to the TestFileBuilder tf
@@ -109,11 +125,11 @@ public class XMLParser {
 			
 			return tf.buildTest();
 		} catch (FileNotFoundException fnfe) {
-			System.out.println("Arquivo não encontrado.");
+			System.out.println("File not found.");
 			fnfe.printStackTrace();
 			System.exit(-1);
 		} catch (UnsupportedEncodingException uee) {
-			System.out.println("Arquivo com formação não suportada.");
+			System.out.println("Unsupported encoding.");
 			uee.printStackTrace();
 			System.exit(-1);
 		} catch (IOException ioe) {
@@ -126,6 +142,9 @@ public class XMLParser {
 			System.exit(-1);
 		} catch (ParsingException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(-1);
+		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);
 		}
@@ -146,14 +165,14 @@ public class XMLParser {
 			Document doc = builder.build(xmlFile);
 			Element root = doc.getRootElement();
 
-			String outputFileName = root.getAttributeValue("machine-name") + "Test.java";
+			String outputFileName = Constants.outputFilePathPrefix + root.getFirstChildElement("machine-name").getValue() + "Test.java";
 			return outputFileName;
 		} catch (FileNotFoundException fnfe) {
-			System.out.println("Arquivo não encontrado.");
+			System.out.println("File not found.");
 			fnfe.printStackTrace();
 			System.exit(-1);
 		} catch (UnsupportedEncodingException uee) {
-			System.out.println("Arquivo com formação não suportada.");
+			System.out.println("Unsupported encoding.");
 			uee.printStackTrace();
 			System.exit(-1);
 		} catch (IOException ioe) {
@@ -187,9 +206,8 @@ public class XMLParser {
 			fout = new FileOutputStream (outputFileName);	// Abre um stream de saída.
 			new PrintStream(fout).println (content);		// Imprime o log no arquivo
 			fout.close();									// fecha o stream de saída		    
-			System.out.println("Arquivo de teste " + outputFileName + " gerado com sucesso.");
 		} catch (IOException e) {
-			System.err.println ("Erro: não foi possível escrever no arquivo.");
+			System.err.println ("Error: could not write to file.");
 			System.exit(-1);
 		}
 	}

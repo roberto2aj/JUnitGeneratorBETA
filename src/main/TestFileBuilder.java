@@ -52,7 +52,7 @@ public class TestFileBuilder {
 	 * @param attributes The values of the attributes of the class during the beginning of the test case.
 	 * @param parameters The names and values of the parameters of the test case.
 	 */
-	public void addTestCase(List<Attribute> attributes, List<String> parameters){
+	public void addTestCase(List<Variable> attributes, List<String> parameters){
 		int id = testCases.size() + 1;
 		TestCaseBuilder tcb = new TestCaseBuilder (objectName, methodName + "Test" + id, methodName, attributes, parameters);
 		testCases.add(tcb);
