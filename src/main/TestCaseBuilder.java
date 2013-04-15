@@ -28,8 +28,7 @@ public class TestCaseBuilder {
 							String testCaseName,
 							String methodName,
 							List<Variable> attributes,
-							List<String> parameters){
-		
+							List<String> parameters){		
 		this.objectName = new String (objectName);
 		this.testCaseName = new String(testCaseName);
 		this.methodName = new String (methodName);
@@ -48,8 +47,8 @@ public class TestCaseBuilder {
 		testCase = testCase.concat("\t@Test\n");
 		testCase = testCase.concat("\tpublic void " + testCaseName + "() {\n");
 		
-		testCase = addAttributions(testCase);
-		testCase = addAssertions(testCase);				
+		testCase = testCase.concat(getAttributions());
+		testCase = testCase.concat(getAssertions());				
 			
 		testCase = testCase.concat("\t}\n\n");
 		
@@ -58,40 +57,44 @@ public class TestCaseBuilder {
 
 
 	/**
-	 * Adds the lines containing the attributions to the test case. This method is used as part of the BuildTestCase method.
+	 * Returns the lines containing the attributions to the test case.
 	 */
-	private String addAttributions(String s){
+	private String getAttributions(){
+		String result = "";
 		//Adds the changes of the values of the object to be tested using setter methods.
 		for (int i = 0; i < attributes.size(); i++){
 			Variable v = attributes.get(i);
-			s = s.concat("\t\t" + objectName + ".set" + Constants.firstCharToUpperCase(v.getName()) + "(" + v.getValue() + ");\n");
+			result = result.concat("\t\t" + objectName + ".set" + Constants.firstCharToUpperCase(v.getName()) + "(" + v.getValue() + ");\n");
 		}
-		s = s.concat("\n");
-		return s;
+		if (!result.equals("")) {
+			result = result.concat("\n");
+		}
+		return result;
 	}
 
 	/**
-	 * Adds the lines containing the Assertions to the test case. Every assertion is added in commented form because it is incomplete in its current form
-	 * as the expected values shall be supplied by the user. This method is used as part of the BuildTestCase method.
+	 * Returns a String object with the lines containing the Assertions to the test case.
+	 * Every assertion is added as a comment because it is expected that the user will complete the assertions with the desired values.
 	 */
-	private String addAssertions(String testCase) {
-		testCase = testCase.concat("\t\t//Uncomment or add expected assertions here.\n"); 
-		testCase = testCase.concat("\t\t//The assertions generated are incomplete as they need the oracle values which must supplied by the user.\n");
+	private String getAssertions() {
+		String result = "";
+		result = result.concat("\t\t//Uncomment or add expected assertions here.\n"); 
+		result = result.concat("\t\t//The assertions generated are incomplete as they need the oracle values which must supplied by the user.\n");
 
 		for (int i = 0; i < attributes.size(); i++){
 			Variable v = attributes.get(i);
-			testCase = testCase.concat("\t\t//assertEquals(" + objectName + ".get" + Constants.firstCharToUpperCase(v.getName()) + "), /* Add expected value here. */);\n");
+			result = result.concat("\t\t//assertEquals(" + objectName + ".get" + Constants.firstCharToUpperCase(v.getName()) + "(), /* Add expected value here. */);\n");
 		}
 
-		testCase = testCase.concat("\t\t//assertEquals("+ objectName + "." + methodName+"(");
+		result = result.concat("\t\t//assertEquals("+ objectName + "." + methodName+"(");
 		for (int i = 0; i < parameters.size(); i++){
-			testCase = testCase.concat(parameters.get(i));
+			result = result.concat(parameters.get(i));
 			if (i < parameters.size() - 1){
-				testCase = testCase.concat(",");
+				result = result.concat(", ");
 			}
 		}
-		testCase = testCase.concat("), /* Add expected value here. */);\n");
-		return testCase;
+		result = result.concat("), /* Add expected value here. */);\n");
+		return result;
 	}
 
 }

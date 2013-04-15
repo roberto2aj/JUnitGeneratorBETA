@@ -7,10 +7,6 @@ package main;
  */
 public class Constants {
 	
-	public static final String inputFilePath = "c://RJR/teste.xml";
-	public static final String outputFilePathPrefix = "c://RJR/";
-	
-
 	/**
 	 * Changes the first char of a String to lower case. 
 	 * In the special cases of a null String or a String with length equal to zero, no change is made. 

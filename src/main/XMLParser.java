@@ -16,8 +16,7 @@ import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
 /*
-Formato de XML esperado. 
-
+Expected XML format
 <test-suite>
 	<machine-name>Player</machine-name>
 	<operation-under-test>substitute</operation-under-test>
@@ -26,7 +25,7 @@ Formato de XML esperado.
 	<test-cases>
 		<test-case>
 			<id>1</id>
-			<formula>Exemplo de fórmula aqui</formula>
+			<formula>Formula example here</formula>
 			<state-variables>
 				<variable>
 					<identifier>var1</identifier>
@@ -45,7 +44,7 @@ Formato de XML esperado.
 			</state-variables>
 			<operation-parameters>
 				<parameter>
-					<identifier>param1</identifer>
+					<identifier>param1</identifier>
 					<values>
 						<value>1</value>
 					</values>
@@ -71,11 +70,19 @@ public class XMLParser {
 	public XMLParser (){ 
 	}
 
-	public void generateJUnit(String fileName){
+	/**
+	 * Generates a JUnit test file template based on a XML file which path is given
+	 * by the input fileName. The result file is written on outputPath. 
+	 * @param fileName The path to the XML file.
+	 * @param outputPath The path to the folder in which the JUnit file will be written.  There
+	 * is no need to specify the name of the file, which is generated automatically based on the
+	 * name of the abstract machine. 
+	 */
+	public void generateJUnit(String fileName, String outputPath){
 		String content = parseFile(fileName);
 		String outputName = getOutputName(fileName);
 		
-		writeJUnitFile(outputName, content);
+		writeJUnitFile(outputPath + outputName, content);
 	
 	}
 
@@ -165,7 +172,7 @@ public class XMLParser {
 			Document doc = builder.build(xmlFile);
 			Element root = doc.getRootElement();
 
-			String outputFileName = Constants.outputFilePathPrefix + root.getFirstChildElement("machine-name").getValue() + "Test.java";
+			String outputFileName = root.getFirstChildElement("machine-name").getValue() + "Test.java";
 			return outputFileName;
 		} catch (FileNotFoundException fnfe) {
 			System.out.println("File not found.");
@@ -199,13 +206,12 @@ public class XMLParser {
 	 * @param content The content to be written on the file
 	 */
 	private void writeJUnitFile(String outputFileName, String content){
-		// Stream para escrever no arquivo
 		FileOutputStream fout;		
 	
 		try {
-			fout = new FileOutputStream (outputFileName);	// Abre um stream de saída.
-			new PrintStream(fout).println (content);		// Imprime o log no arquivo
-			fout.close();									// fecha o stream de saída		    
+			fout = new FileOutputStream (outputFileName);	
+			new PrintStream(fout).println (content);		
+			fout.close();		    
 		} catch (IOException e) {
 			System.err.println ("Error: could not write to file.");
 			System.exit(-1);

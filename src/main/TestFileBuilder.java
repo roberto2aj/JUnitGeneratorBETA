@@ -24,28 +24,34 @@ public class TestFileBuilder {
 	 * @return A string object representing a JUnit test file.
 	 */
 	public String buildTest(){
-		String test = "";
-		test = test.concat("import org.junit.*;\n");
-		test = test.concat("import org.junit.Assert.*;\n");
-		test = test.concat("import org.junit.Before;\n");
-		test = test.concat("import org.junit.Test;\n\n");
-		
+		String test = "import org.junit.*;\n"
+					+ "import org.junit.Assert.*;\n"
+					+ "import org.junit.Before;\n"
+					+ "import org.junit.Test;\n\n";
 		test = test.concat("public class " + className + "Test {\n\n");
-		
 		test = test.concat("\tprivate " + className + " " + objectName + ";\n\n");
-
 		test = test.concat("\t@Before\n");
 		test = test.concat("\tpublic void setUp() throws Exception {\n");
 		test = test.concat("\t\t" + objectName + " = new " + className + "();\n");
 		test = test.concat("\t}\n\n");
 		
 		for (int i = 0; i < testCases.size(); i++){
-			test = test.concat(testCases.get(i).buildTestCase());
+			test = test.concat(getTestCase(i));
 		}
 		
 		test = test.concat("}");
 		return test;
 	}
+
+	/**
+	 * Returns a String representing a test case method based.
+	 * @param i The index of the test case
+	 * @return A string representing the test case method.
+	 */
+	private String getTestCase(int i){
+		return testCases.get(i).buildTestCase();
+	}
+	
 
 	/**
 	 * Adds a new TestCaseBuilder object to the list of TestCaseBuilders based on the parameters and attributes of the test case.
