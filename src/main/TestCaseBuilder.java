@@ -43,15 +43,11 @@ public class TestCaseBuilder {
 	 * @return A String object representing the test case method
 	 */
 	public String buildTestCase(){
-		String testCase = "";
-		testCase = testCase.concat("\t@Test\n");
-		testCase = testCase.concat("\tpublic void " + testCaseName + "() {\n");
-		
-		testCase = testCase.concat(getAttributions());
-		testCase = testCase.concat(getAssertions());				
-			
-		testCase = testCase.concat("\t}\n\n");
-		
+		String testCase = "\t@Test\n"
+						+ "\tpublic void " + testCaseName + "() {\n"
+						+ getAttributions()
+						+ getAssertions()
+						+ "\t}\n\n";
 		return testCase;
 	}
 
@@ -78,8 +74,8 @@ public class TestCaseBuilder {
 	 */
 	private String getAssertions() {
 		String result = "";
-		result = result.concat("\t\t//Uncomment or add expected assertions here.\n"); 
-		result = result.concat("\t\t//The assertions generated are incomplete as they need the oracle values which must supplied by the user.\n");
+		result = result.concat("\t\t//Uncomment or add expected assertions here.\n"
+							+  "\t\t//The assertions generated are incomplete as they need the oracle values which must supplied by the user.\n");
 
 		for (int i = 0; i < attributes.size(); i++){
 			Variable v = attributes.get(i);

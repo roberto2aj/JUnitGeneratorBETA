@@ -13,7 +13,6 @@ import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.ParsingException;
-import nu.xom.ValidityException;
 
 /*
 Expected XML format
@@ -63,12 +62,7 @@ Expected XML format
 </test-suite>
 */
 
-
-
 public class XMLParser {
-
-	public XMLParser (){ 
-	}
 
 	/**
 	 * Generates a JUnit test file template based on a XML file which path is given
@@ -78,12 +72,10 @@ public class XMLParser {
 	 * is no need to specify the name of the file, which is generated automatically based on the
 	 * name of the abstract machine. 
 	 */
-	public void generateJUnit(String fileName, String outputPath){
+	public static void generateJUnit(String fileName, String outputPath){
 		String content = parseFile(fileName);
 		String outputName = getOutputName(fileName);
-		
 		writeJUnitFile(outputPath + outputName, content);
-	
 	}
 
 	/**
@@ -91,19 +83,17 @@ public class XMLParser {
 	 * @param fileName The name of the xml file
 	 * @return The content of the JUnit file
 	 */
-	public static String parseFile(String fileName){
+	private static String parseFile(String fileName){
 		try {
-
 			FileInputStream xmlFile = new FileInputStream(fileName);
-
 			Builder builder = new Builder();
 			Document doc = builder.build(xmlFile);
 			Element root = doc.getRootElement();		 //Gets the test-suite node.
-						
+
 			String className = root.getFirstChildElement("machine-name").getValue();
 			String operationName = root.getFirstChildElement("operation-under-test").getValue();			
 			TestFileBuilder tf = new TestFileBuilder(className, operationName);
-			
+
 			Elements testCasesXML = root.getFirstChildElement("test-cases").getChildElements("test-case");
 
 			//For each test case...
@@ -128,8 +118,7 @@ public class XMLParser {
 				
 				//And add a new test case using the parameters and attributes found to the TestFileBuilder tf
 				tf.addTestCase(attributes, parameters);
-			}
-			
+			}			
 			return tf.buildTest();
 		} catch (FileNotFoundException fnfe) {
 			System.out.println("File not found.");
@@ -143,18 +132,11 @@ public class XMLParser {
 			System.out.println("IO Exception");
 			ioe.printStackTrace();
 			System.exit(-1);
-		} catch (ValidityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(-1);
 		} catch (ParsingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.exit(-1);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(-1);
-		}
+		} 
 		return "error"; 
 	}
 
@@ -163,11 +145,9 @@ public class XMLParser {
 	 * @param inputFileName The name of the .xml file to be read
 	 * @return The name of the output file.
 	 */
-	private String getOutputName(String inputFileName){
+	private static String getOutputName(String inputFileName){
 		try {
-
 			FileInputStream xmlFile = new FileInputStream(inputFileName);
-
 			Builder builder = new Builder();
 			Document doc = builder.build(xmlFile);
 			Element root = doc.getRootElement();
@@ -186,29 +166,22 @@ public class XMLParser {
 			System.out.println("IO Exception");
 			ioe.printStackTrace();
 			System.exit(-1);
-		} catch (ValidityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(-1);
 		} catch (ParsingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.exit(-1);
 		}
 		return "error.java"; 
-
 	}
-	
-	
+
 	/**
 	 * Creates or overwrites a JUnit test class
 	 * @param outputFileName The name of the file to be created or overwritten
 	 * @param content The content to be written on the file
 	 */
-	private void writeJUnitFile(String outputFileName, String content){
-		FileOutputStream fout;		
-	
+	private static void writeJUnitFile(String outputFileName, String content){	
 		try {
+			FileOutputStream fout;
 			fout = new FileOutputStream (outputFileName);	
 			new PrintStream(fout).println (content);		
 			fout.close();		    

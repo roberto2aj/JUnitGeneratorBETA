@@ -24,35 +24,38 @@ public class TestFileBuilder {
 	 * @return A string object representing a JUnit test file.
 	 */
 	public String buildTest(){
+		String methodsCode = "";
+		for (int i = 0; i < testCases.size(); i++){
+			methodsCode = methodsCode.concat(getTestCase(i));
+		}
 		String test = "import org.junit.*;\n"
 					+ "import org.junit.Assert.*;\n"
 					+ "import org.junit.Before;\n"
-					+ "import org.junit.Test;\n\n";
-		test = test.concat("public class " + className + "Test {\n\n");
-		test = test.concat("\tprivate " + className + " " + objectName + ";\n\n");
-		test = test.concat("\t@Before\n");
-		test = test.concat("\tpublic void setUp() throws Exception {\n");
-		test = test.concat("\t\t" + objectName + " = new " + className + "();\n");
-		test = test.concat("\t}\n\n");
-		
-		for (int i = 0; i < testCases.size(); i++){
-			test = test.concat(getTestCase(i));
-		}
-		
-		test = test.concat("}");
+					+ "import org.junit.Test;\n" 
+					+ "\n"
+					+ "public class " + className + "Test {\n" 
+					+ "\n"
+					+ "\tprivate " + className + " " + objectName + ";\n"
+					+ "\n"
+					+ "\t@Before\n"
+					+ "\tpublic void setUp() throws Exception {\n"
+					+ "\t\t" + objectName + " = new " + className + "();\n"
+					+ "\t}\n" 
+					+ "\n"
+					+ methodsCode
+					+ "}";
 		return test;
 	}
 
 	/**
-	 * Returns a String representing a test case method based.
-	 * @param i The index of the test case
+	 * Returns a String representing a test case method based on its index in the list testCases.
+	 * @param index The index of the test case.
 	 * @return A string representing the test case method.
 	 */
-	private String getTestCase(int i){
-		return testCases.get(i).buildTestCase();
+	private String getTestCase(int index){
+		return testCases.get(index).buildTestCase();
 	}
 	
-
 	/**
 	 * Adds a new TestCaseBuilder object to the list of TestCaseBuilders based on the parameters and attributes of the test case.
 	 * @param attributes The values of the attributes of the class during the beginning of the test case.

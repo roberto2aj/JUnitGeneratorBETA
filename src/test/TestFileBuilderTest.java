@@ -18,7 +18,7 @@ public class TestFileBuilderTest {
 	public void setUp() {
 	}
 
-	//1 test case
+	//Test case of a JUnit class containing 1 test case.
 	@Test
 	public void buildTestTest1(){
 		tfb = new TestFileBuilder("Player", "play");
@@ -47,7 +47,7 @@ public class TestFileBuilderTest {
 		assertEquals(result,oracle);
 	}
 
-	//2 test cases
+	//Test case of a JUnit class containing 2 test cases.
 	@Test
 	public void buildTestTest2(){
 		tfb = new TestFileBuilder("Player", "play");
@@ -55,8 +55,7 @@ public class TestFileBuilderTest {
 		List<String> params = new LinkedList<String>();
 		tfb.addTestCase(variables, params);
 		tfb.addTestCase(variables, params);
-		
-		
+
 		String result = tfb.buildTest();
 		String oracle = "import org.junit.*;\n"
 					  + "import org.junit.Assert.*;\n"
@@ -85,8 +84,5 @@ public class TestFileBuilderTest {
 		System.out.println(oracle);
 		assertEquals(result,oracle);
 	}
-
-
-
 
 }
