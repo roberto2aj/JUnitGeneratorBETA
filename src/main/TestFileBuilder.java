@@ -29,11 +29,11 @@ public class TestFileBuilder {
 			methodsCode = methodsCode.concat(getTestCase(i));
 		}
 		String test = "import org.junit.*;\n"
-					+ "import org.junit.Assert.*;\n"
+					+ "import static org.junit.Assert.*;\n"
 					+ "import org.junit.Before;\n"
 					+ "import org.junit.Test;\n" 
 					+ "\n"
-					+ "public class " + className + "Test {\n" 
+					+ "public class " + className + Constants.firstCharToUpperCase(methodName) + "Test {\n" 
 					+ "\n"
 					+ "\tprivate " + className + " " + objectName + ";\n"
 					+ "\n"

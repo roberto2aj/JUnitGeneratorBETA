@@ -28,10 +28,10 @@ public class TestFileBuilderTest {
 		
 		String result = tfb.buildTest();
 		String oracle = "import org.junit.*;\n"
-					  + "import org.junit.Assert.*;\n"
+					  + "import static org.junit.Assert.*;\n"
 					  + "import org.junit.Before;\n"
 					  + "import org.junit.Test;\n\n"
-					  + "public class PlayerTest {\n\n"
+					  + "public class PlayerPlayTest {\n\n"
 					  + "\tprivate Player player;\n\n"
 					  + "\t@Before\n"
 					  + "\tpublic void setUp() throws Exception {\n" 
@@ -58,10 +58,10 @@ public class TestFileBuilderTest {
 
 		String result = tfb.buildTest();
 		String oracle = "import org.junit.*;\n"
-					  + "import org.junit.Assert.*;\n"
+					  + "import static org.junit.Assert.*;\n"
 					  + "import org.junit.Before;\n"
 					  + "import org.junit.Test;\n\n"
-					  + "public class PlayerTest {\n\n"
+					  + "public class PlayerPlayTest {\n\n"
 					  + "\tprivate Player player;\n\n"
 					  + "\t@Before\n"
 					  + "\tpublic void setUp() throws Exception {\n" 
