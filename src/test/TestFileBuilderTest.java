@@ -1,8 +1,6 @@
 package test;
 import static org.junit.Assert.*;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,8 +25,7 @@ public class TestFileBuilderTest {
 		tfb.addTestCase(variables, params);
 		
 		String result = tfb.buildTest();
-		String oracle = "import org.junit.*;\n"
-					  + "import static org.junit.Assert.*;\n"
+		String oracle = "import static org.junit.Assert.*;\n"
 					  + "import org.junit.Before;\n"
 					  + "import org.junit.Test;\n\n"
 					  + "public class PlayerPlayTest {\n\n"
@@ -57,8 +54,7 @@ public class TestFileBuilderTest {
 		tfb.addTestCase(variables, params);
 
 		String result = tfb.buildTest();
-		String oracle = "import org.junit.*;\n"
-					  + "import static org.junit.Assert.*;\n"
+		String oracle = "import static org.junit.Assert.*;\n"
 					  + "import org.junit.Before;\n"
 					  + "import org.junit.Test;\n\n"
 					  + "public class PlayerPlayTest {\n\n"

@@ -43,12 +43,11 @@ public class TestCaseBuilder {
 	 * @return A String object representing the test case method
 	 */
 	public String buildTestCase(){
-		String testCase = "\t@Test\n"
-						+ "\tpublic void " + testCaseName + "() {\n"
-						+ getAttributions()
-						+ getAssertions()
-						+ "\t}\n\n";
-		return testCase;
+		return "\t@Test\n"
+				+ "\tpublic void " + testCaseName + "() {\n"
+				+ getAttributions()
+				+ getAssertions()
+				+ "\t}\n\n";
 	}
 
 
@@ -57,7 +56,6 @@ public class TestCaseBuilder {
 	 */
 	private String getAttributions(){
 		String result = "";
-		//Adds the changes of the values of the object to be tested using setter methods.
 		for (int i = 0; i < attributes.size(); i++){
 			Variable v = attributes.get(i);
 			result = result.concat("\t\t" + objectName + ".set" + Constants.firstCharToUpperCase(v.getName()) + "(" + v.getValue() + ");\n");

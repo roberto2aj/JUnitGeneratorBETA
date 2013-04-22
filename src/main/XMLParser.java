@@ -152,7 +152,9 @@ public class XMLParser {
 			Document doc = builder.build(xmlFile);
 			Element root = doc.getRootElement();
 
-			String outputFileName = root.getFirstChildElement("machine-name").getValue() + "Test.java";
+			String outputFileName = root.getFirstChildElement("machine-name").getValue() 
+					+ Constants.firstCharToUpperCase(root.getFirstChildElement("operation-under-test").getValue())
+					+ "Test.java";
 			return outputFileName;
 		} catch (FileNotFoundException fnfe) {
 			System.out.println("File not found.");

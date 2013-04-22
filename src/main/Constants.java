@@ -15,8 +15,7 @@ public class Constants {
 	 */
 	public static String firstCharToLowerCase(String s){
 		if (s != null && s != ""){
-			String result = Character.toString(Character.toLowerCase(s.charAt(0))).concat(s.substring(1));
-			return result;
+			return Character.toString(Character.toLowerCase(s.charAt(0))).concat(s.substring(1));
 		} else {
 			return s;
 		}
@@ -30,10 +29,10 @@ public class Constants {
 	 */
 	public static String firstCharToUpperCase(String s){
 		if (s != null && s != ""){
-			String result = Character.toString(Character.toUpperCase(s.charAt(0))).concat(s.substring(1));
-			return result;
+			return Character.toString(Character.toUpperCase(s.charAt(0))).concat(s.substring(1));
 		} else {
 			return s;
 		}
 	}
+
 }

@@ -28,23 +28,21 @@ public class TestFileBuilder {
 		for (int i = 0; i < testCases.size(); i++){
 			methodsCode = methodsCode.concat(getTestCase(i));
 		}
-		String test = "import org.junit.*;\n"
-					+ "import static org.junit.Assert.*;\n"
-					+ "import org.junit.Before;\n"
-					+ "import org.junit.Test;\n" 
-					+ "\n"
-					+ "public class " + className + Constants.firstCharToUpperCase(methodName) + "Test {\n" 
-					+ "\n"
-					+ "\tprivate " + className + " " + objectName + ";\n"
-					+ "\n"
-					+ "\t@Before\n"
-					+ "\tpublic void setUp() throws Exception {\n"
-					+ "\t\t" + objectName + " = new " + className + "();\n"
-					+ "\t}\n" 
-					+ "\n"
-					+ methodsCode
-					+ "}";
-		return test;
+		return "import static org.junit.Assert.*;\n"
+				+ "import org.junit.Before;\n"
+				+ "import org.junit.Test;\n" 
+				+ "\n"
+				+ "public class " + className + Constants.firstCharToUpperCase(methodName) + "Test {\n" 
+				+ "\n"
+				+ "\tprivate " + className + " " + objectName + ";\n"
+				+ "\n"
+				+ "\t@Before\n"
+				+ "\tpublic void setUp() throws Exception {\n"
+				+ "\t\t" + objectName + " = new " + className + "();\n"
+				+ "\t}\n" 
+				+ "\n"
+				+ methodsCode
+				+ "}";
 	}
 
 	/**
